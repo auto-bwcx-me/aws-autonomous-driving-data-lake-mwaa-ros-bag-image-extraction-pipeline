@@ -1,7 +1,7 @@
 {
-  "ecr-repository-name": "vsi-rosbag-repository-mwaa",
-  "image-name": "my-vsi-ros-image-mwaa",
-  "stack-id": "rosbag-processing-stack",
+  "ecr-repository-name": "adas-rosbag-workflow-with-airflow",
+  "image-name": "adas-rosbag-workflow-with-airflow",
+  "stack-id": "adas-rosbag-workflow-with-airflow",
   "cpu": 4096,
   "memory-limit-mib": 30720
 }

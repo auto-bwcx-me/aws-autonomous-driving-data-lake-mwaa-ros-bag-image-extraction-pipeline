@@ -9,36 +9,17 @@
 
 
 # 1.环境配置
-1.设置Cloud9
-下载代码：
-```
-cd ~/environment
-sudo yum install jq wget -y
+A.设置Cloud9
+* 设置并绑定 Instance Profile 角色
+* 清理临时 Credentials
 
-git clone https://github.com/auto-bwcx-me/aws-autonomous-driving-data-lake-mwaa-ros-bag-image-extraction-pipeline.git
-
-cd aws-autonomous-driving-data-lake-mwaa-ros-bag-image-extraction-pipeline
-```
-
-设置属性
 ```
 aws configure set region $(curl -s http://169.254.169.254/latest/meta-data/placement/region)
-```
-
-创建角色并关联
-```
-cd iam && sh check_role.sh
-
-aws ec2 describe-iam-instance-profile-associations
-```
-
-删除临时 Credentials
-```
+sudo yum install jq wget -y
 rm -vf ${HOME}/.aws/credentials
 ```
 
-
-2.更新Python3.9
+B.更新Python3.9
 ```
 cd ~/environment
 sudo yum install jq wget -y
@@ -58,23 +39,27 @@ sudo ln -s /usr/local/bin/python3.9 /usr/bin/python3
 # 2.部署步骤
 
 ## 2.1 准备代码
+下载代码：
+```
+cd ~/environment
+
+git clone https://github.com/auto-bwcx-me/aws-autonomous-driving-data-lake-mwaa-ros-bag-image-extraction-pipeline.git
+
+cd aws-autonomous-driving-data-lake-mwaa-ros-bag-image-extraction-pipeline
+```
 
 
 设置Cloud9磁盘空间
 ```
 # sh resize-ebs.sh 1000
-cd aws-autonomous-driving-data-lake-mwaa-ros-bag-image-extraction-pipeline
 
 sh resize-ebs-nvme.sh 1000
 ```
 
 
 
-
 ## 2.2 设置脚本区域
-
 在开始之前，需要设定 Region，如果没有设定的话，默认使用新加坡区域 （ap-southeast-1）
-
 ```
 # sh 00-define-region.sh ap-southeast-1
 
@@ -84,7 +69,6 @@ sh 00-define-region.sh
 
 
 ## 2.3 准备环境
-
 ```
 pip install --upgrade pip
 
@@ -102,9 +86,9 @@ cdk --version
 ```
 
 
-创建 ECR 存储库： `vsi-rosbag-repository-mwaa`
+创建 ECR 存储库： `adas-rosbag-workflow-with-airflow`
 ```
-aws ecr create-repository --repository-name vsi-rosbag-repository-mwaa
+aws ecr create-repository --repository-name adas-rosbag-workflow-with-airflow
 ```
 
 
@@ -123,8 +107,6 @@ bash deploy.sh deploy true
 ```
 
 注意：这个部署过程有个确认过程，不能直接启动部署就走开哦，要确认部署才能走开。
-
-
 
 
 

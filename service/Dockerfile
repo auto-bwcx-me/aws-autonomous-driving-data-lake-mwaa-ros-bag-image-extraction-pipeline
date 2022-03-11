@@ -3,12 +3,12 @@ FROM ros:melodic-perception-bionic
 RUN sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
 RUN sudo apt-key del 421C365BD9FF1F717815A3895523BAEEB01FA116
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
-RUN apt update && apt-get install python3-pip unzip curl vim ffmpeg -y
+RUN apt-get update && apt-get install python3-pip unzip curl vim ffmpeg -y
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 RUN unzip awscliv2.zip
 RUN sudo ./aws/install
 
-RUN apt install git -y
+RUN apt-get install git -y
 RUN apt-get install ros-melodic-pcl-conversions -y
 RUN apt-get install ros-melodic-pcl-ros -y
 
