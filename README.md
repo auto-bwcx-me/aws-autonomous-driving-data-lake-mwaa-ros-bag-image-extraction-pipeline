@@ -150,23 +150,8 @@ aws s3 cp ./auto-data/2020-11-19-22-21-36_1.bag s3://${s3bkt}/2022-03-09-01.bag
 
 
 
-# 4.SageMaker笔记本
 
-打开一个 Terminal 终端，执行如下代码做准备工作
-```
-cd SageMaker
-
-git clone https://github.com/auto-bwcx-me/aws-autonomous-driving-data-lake-image-extraction-pipeline-from-ros-bagfiles.git
-
-cp -Rv aws-autonomous-driving-data-lake-image-extraction-pipeline-from-ros-bagfiles/object-detection/* ./
-```
-
-然后双击打开 `Transfer-Learning.ipynb` 可开始测试。
-
-
-
-
-## Introduction
+# 原 ReadMe.md 文件
 # Rosbag image processing using Amazon Managed Workflows for Apache Airflow (MWAA)
 This solution describes a workflow that processes ROS bag files on Amazon S3 (https://aws.amazon.com/s3/), extracts individual PNGs from a video stream using AWS Fargate (https://aws.amazon.com/fargate) on Amazon Elastic Container Service (https://aws.amazon.com/ecs) (Amazon ECS), uses Amazon Rekognition (https://aws.amazon.com/rekognition/) to detect objects within the exported images and draws bounding boxes for the detected objects within the images. For more information about this solution, including more information about this solution please refer to this blog post.
 https://aws.amazon.com/blogs/architecture/field-notes-deploying-autonomous-driving-and-adas-workloads-at-scale-with-amazon-managed-workflows-for-apache-airflow/
