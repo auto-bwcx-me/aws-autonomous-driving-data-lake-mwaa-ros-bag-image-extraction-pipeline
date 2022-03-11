@@ -21,7 +21,7 @@ acc_id=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/documen
 role_arn=$(aws iam get-role --role-name ${role_name} --output json | jq -r .Role.Arn)
 # arn:aws:iam::351452666966:role/ee-Role
 if [ ${#role_arn} -lt 6 ]; then
-    sed "s/123456789012/$acc_id/g" iam-role-trust-policy.json >temp.json
+    sed "s/123456789012/$acc_id/g" iam-role-trust-policy.json >./temp.json
     aws iam create-role --role-name ${role_name} --assume-role-policy-document file://temp.json
     rm -f temp.json
     echo "Create role ${role_name}."
@@ -45,5 +45,5 @@ if [ ${#ins_profile_arn} -lt 6 ]; then
 fi
 
 ins_id=$(curl http://169.254.169.254/latest/meta-data/instance-id)
-aws ec2 associate-iam-instance-profile --instance-id i-123456789abcde123 \
+aws ec2 associate-iam-instance-profile --instance-id ${ins_id} \
     --iam-instance-profile Name=${ins_profile_name}
