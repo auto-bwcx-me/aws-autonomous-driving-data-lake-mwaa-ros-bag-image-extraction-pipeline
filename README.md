@@ -1,25 +1,21 @@
 
-# 博客
-
-英文： https://aws.amazon.com/cn/blogs/architecture/field-notes-building-an-automated-image-processing-and-model-training-pipeline-for-autonomous-driving/  
-
-中文： 准备中。
-
-
 # 参考架构
 ----------
-![](./imgs/auto-4.jpg)
+![](./images/architecture.jpg)
+
+
+英文原版 Blog ： [deploying-autonomous-driving-and-adas-workloads-at-scale-with-amazon-managed-workflows-for-apache-airflow](https://aws.amazon.com/cn/blogs/architecture/field-notes-deploying-autonomous-driving-and-adas-workloads-at-scale-with-amazon-managed-workflows-for-apache-airflow/)
 
 
 
 
 # 1.环境配置
-----------
 1.设置Cloud9权限 
-- 绑定 Instance Profile角色（这个必须操作，cdk不能使用aksk的方式）  
-- 清理临时 Token（如果没有清除，cdk将会执行失败，因为STS和AKSK优先于Role执行）  
+- 绑定 Instance Profile角色（比每次指定 profile 的方式更简单方便） 
+- 清理临时 Token（如果没有清除，临时Token优先于Role执行）  
 ```
 sudo yum install jq -y
+sudo yum install python3.9
 
 rm -vf ${HOME}/.aws/credentials
 ```
@@ -33,7 +29,6 @@ aws configure set region $(curl -s http://169.254.169.254/latest/meta-data/place
 
 
 # 2.部署步骤
-----------
 
 ## 2.1 准备代码
 ```
@@ -55,13 +50,11 @@ sh resize-ebs-nvme.sh 1000
 
 
 ## 2.2 设置脚本区域
-----------
 
 在开始之前，需要设定 Region，如果没有设定的话，默认使用新加坡区域 （ap-southeast-1）
 
 ```
-# default setting singapore region (ap-southeast-1)
-# sh 00-define-region.sh us-east-1
+# sh 00-define-region.sh ap-southeast-1
 
 sh 00-define-region.sh
 ```
@@ -87,9 +80,9 @@ cdk --version
 ```
 
 
-创建 ECR 存储库： `vsi-rosbag-repository-3`
+创建 ECR 存储库： `vsi-rosbag-repository-mwaa`
 ```
-aws ecr create-repository --repository-name vsi-rosbag-repository-3
+aws ecr create-repository --repository-name vsi-rosbag-repository-mwaa
 ```
 
 
@@ -107,12 +100,11 @@ cdk bootstrap
 bash deploy.sh deploy true
 ```
 
-注意：这个部署过程有个确认过程，不能直接启动部署就走开哦，要确认部署才能走开。
+
 
 
 
 # 3.准备数据
-----------
 请确保 CDK 全部部署成功（大概需要15-20分钟），然后再在 Cloud9 上执行这些操作。
 ```
 # get s3 bucket name
@@ -149,7 +141,6 @@ aws s3 cp ./auto-data/test2/2020-11-19-22-21-36_1.bag s3://${s3bkt}/test-vehicle
 
 
 # 4.SageMaker笔记本
-----------
 
 打开一个 Terminal 终端，执行如下代码做准备工作
 ```

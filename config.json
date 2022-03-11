@@ -1,6 +1,6 @@
 {
-  "ecr-repository-name": "vsi-rosbag-repository",
-  "image-name": "my-vsi-ros-image",
+  "ecr-repository-name": "vsi-rosbag-repository-mwaa",
+  "image-name": "my-vsi-ros-image-mwaa",
   "stack-id": "rosbag-processing-stack",
   "cpu": 4096,
   "memory-limit-mib": 30720

@@ -7,8 +7,8 @@ run_region="ap-southeast-1"
 
 export aws_account_id=$(aws sts get-caller-identity --query Account --output text)
 
-REPO_NAME=vsi-rosbag-repository-3 # Should match the ecr repository name given in config.json
-IMAGE_NAME=my-vsi-ros-image-3     # Should match the image name given in config.json
+REPO_NAME=vsi-rosbag-repository-mwaa # Should match the ecr repository name given in config.json
+IMAGE_NAME=my-vsi-ros-image-mwaa     # Should match the image name given in config.json
 
 python3.9 -m venv .env
 source .env/bin/activate
