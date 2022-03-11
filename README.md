@@ -8,7 +8,7 @@
 
 # 参考架构
 ----------
-![](/imgs/auto-4.jpg)
+![](./imgs/auto-4.jpg)
 
 
 
