@@ -9,24 +9,38 @@
 
 
 # 1.环境配置
-1.设置Cloud9权限 
-- 绑定 Instance Profile角色（比每次指定 profile 的方式更简单方便） 
-- 清理临时 Token（如果没有清除，临时Token优先于Role执行）  
+1.设置Cloud9
+下载代码：
 ```
-sudo yum install jq wget -y
+cd ~/environment
 
-rm -vf ${HOME}/.aws/credentials
+git clone https://github.com/auto-bwcx-me/aws-autonomous-driving-data-lake-mwaa-ros-bag-image-extraction-pipeline.git
+
+cd aws-autonomous-driving-data-lake-mwaa-ros-bag-image-extraction-pipeline
 ```
 
-
-2.设置Cloud9区域
+设置属性
 ```
 aws configure set region $(curl -s http://169.254.169.254/latest/meta-data/placement/region)
 ```
 
-
-3.更新Python3.9
+创建角色并关联
 ```
+cd iam && sh check_role.sh && cd -
+
+aws ec2 describe-iam-instance-profile-associations
+```
+
+删除临时 Credentials
+```
+rm -vf ${HOME}/.aws/credentials
+```
+
+
+2.更新Python3.9
+```
+cd ~/environment
+sudo yum install jq wget -y
 wget https://www.python.org/ftp/python/3.9.10/Python-3.9.10.tgz
 tar xzf Python-3.9.10.tgz
 cd Python-3.9.10 
@@ -39,15 +53,10 @@ sudo ln -s /usr/local/bin/python3.9 /usr/bin/python3
 ```
 
 
+
 # 2.部署步骤
 
 ## 2.1 准备代码
-```
-git clone https://github.com/auto-bwcx-me/aws-autonomous-driving-data-lake-mwaa-ros-bag-image-extraction-pipeline.git
-
-cd aws-autonomous-driving-data-lake-mwaa-ros-bag-image-extraction-pipeline
-```
-
 
 
 设置Cloud9磁盘空间
@@ -111,6 +120,9 @@ cdk bootstrap
 bash deploy.sh deploy true
 ```
 
+注意：这个部署过程有个确认过程，不能直接启动部署就走开哦，要确认部署才能走开。
+
+
 
 
 
@@ -119,9 +131,9 @@ bash deploy.sh deploy true
 请确保 CDK 全部部署成功（大概需要15-20分钟），然后再在 Cloud9 上执行这些操作。
 ```
 # get s3 bucket name
-s3url="https://auto-bwcx-me.s3.ap-southeast-1.amazonaws.com/my-vsi-rosbag-stack-srcbucket"
+s3url="https://auto-bwcx-me.s3.ap-southeast-1.amazonaws.com/aws-autonomous-driving-dataset/test-vehicle-01/072021"
 echo "Download URL is: ${s3url}"
-s3bkt=$(aws s3 ls |grep my-vsi-rosbag-stack-srcbucket |awk '{print $3}')
+s3bkt=$(aws s3 ls |grep rosbag-processing-stack-srcbucket |awk '{print $3}')
 echo "S3 bucket is: ${s3bkt}"
 
 
@@ -131,19 +143,10 @@ mkdir -p ./auto-data/{industry,test1,test2}
 
 
 # download testing files
-wget ${s3url}/industry-kit/v1/2020-10-05-11-11-58_1.bag -O ./auto-data/industry/2020-10-05-11-11-58_1.bag
-wget ${s3url}/industry-kit/v1/test_file_2GB_2021-07-14-12-00-00_1.bag -O ./auto-data/industry/test_file_2GB_2021-07-14-12-00-00_1.bag
-wget ${s3url}/industry-kit/v1/test_file_7GB_2021-07-14-12-30-00_1.bag -O ./auto-data/industry/test_file_7GB_2021-07-14-12-30-00_1.bag
-wget ${s3url}/test-vehicle-01/072021/2020-11-19-22-21-36_1.bag -O ./auto-data/test1/2020-11-19-22-21-36_1.bag
-wget ${s3url}/test-vehicle-02/072021/2020-11-19-22-21-36_1.bag -O ./auto-data/test2/2020-11-19-22-21-36_1.bag
-
+wget ${s3url}/2020-11-19-22-21-36_1.bag -O ./auto-data/2020-11-19-22-21-36_1.bag
 
 # upload testing file
-aws s3 cp ./auto-data/industry/2020-10-05-11-11-58_1.bag s3://${s3bkt}/industry-kit/v1/2020-10-05-11-11-58_1.bag
-aws s3 cp ./auto-data/industry/test_file_2GB_2021-07-14-12-00-00_1.bag s3://${s3bkt}/industry-kit/v1/test_file_2GB_2021-07-14-12-00-00_1.bag
-aws s3 cp ./auto-data/industry/test_file_7GB_2021-07-14-12-30-00_1.bag s3://${s3bkt}/industry-kit/v1/test_file_7GB_2021-07-14-12-30-00_1.bag
-aws s3 cp ./auto-data/test1/2020-11-19-22-21-36_1.bag s3://${s3bkt}/test-vehicle-01/072021/2020-11-19-22-21-36_1.bag
-aws s3 cp ./auto-data/test2/2020-11-19-22-21-36_1.bag s3://${s3bkt}/test-vehicle-02/072021/2020-11-19-22-21-36_1.bag
+aws s3 cp ./auto-data/2020-11-19-22-21-36_1.bag s3://${s3bkt}/2022-03-09-01.bag
 ```
 
 
