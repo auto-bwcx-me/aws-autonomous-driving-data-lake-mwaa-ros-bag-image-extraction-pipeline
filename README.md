@@ -1,6 +1,5 @@
 
 # 参考架构
-----------
 ![](./images/architecture.jpg)
 
 
