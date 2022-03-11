@@ -6,7 +6,7 @@ with open("README.md") as fp:
 
 
 setuptools.setup(
-    name="adas-rosbag-workflow-with-airflow",
+    name="rosbag-workflow-airflow",
     version="0.0.1",
     description="Rosbag image extraction using MWAA",
     long_description=long_description,
