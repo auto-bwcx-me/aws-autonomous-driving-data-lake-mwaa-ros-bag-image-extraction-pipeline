@@ -13,6 +13,7 @@
 下载代码：
 ```
 cd ~/environment
+sudo yum install jq wget -y
 
 git clone https://github.com/auto-bwcx-me/aws-autonomous-driving-data-lake-mwaa-ros-bag-image-extraction-pipeline.git
 
@@ -26,7 +27,7 @@ aws configure set region $(curl -s http://169.254.169.254/latest/meta-data/place
 
 创建角色并关联
 ```
-cd iam && sh check_role.sh && cd -
+cd iam && sh check_role.sh
 
 aws ec2 describe-iam-instance-profile-associations
 ```
@@ -62,6 +63,7 @@ sudo ln -s /usr/local/bin/python3.9 /usr/bin/python3
 设置Cloud9磁盘空间
 ```
 # sh resize-ebs.sh 1000
+cd aws-autonomous-driving-data-lake-mwaa-ros-bag-image-extraction-pipeline
 
 sh resize-ebs-nvme.sh 1000
 ```

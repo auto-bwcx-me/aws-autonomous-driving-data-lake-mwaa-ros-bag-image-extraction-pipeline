@@ -17,7 +17,7 @@ if [ ${#policy_arn} -lt 6 ]; then
 fi
 
 echo "Check role of: $role_name"
-acc_id=$(echo ${policy_arn} | awk -F ":" '{print $5}')
+acc_id=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document/ |jq -r .accountId)
 role_arn=$(aws iam get-role --role-name ${role_name} --output json | jq -r .Role.Arn)
 # arn:aws:iam::351452666966:role/ee-Role
 if [ ${#role_arn} -lt 6 ]; then
