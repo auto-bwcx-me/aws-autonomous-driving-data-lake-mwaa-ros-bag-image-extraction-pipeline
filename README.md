@@ -13,8 +13,7 @@
 - 绑定 Instance Profile角色（比每次指定 profile 的方式更简单方便） 
 - 清理临时 Token（如果没有清除，临时Token优先于Role执行）  
 ```
-sudo yum install jq -y
-sudo yum install python3.9
+sudo yum install jq wget -y
 
 rm -vf ${HOME}/.aws/credentials
 ```
@@ -25,6 +24,19 @@ rm -vf ${HOME}/.aws/credentials
 aws configure set region $(curl -s http://169.254.169.254/latest/meta-data/placement/region)
 ```
 
+
+3.更新Python3.9
+```
+wget https://www.python.org/ftp/python/3.9.10/Python-3.9.10.tgz
+tar xzf Python-3.9.10.tgz
+cd Python-3.9.10 
+
+./configure --enable-optimizations
+sudo make altinstall
+
+sudo rm -f /usr/bin/python3
+sudo ln -s /usr/local/bin/python3.9 /usr/bin/python3
+```
 
 
 # 2.部署步骤

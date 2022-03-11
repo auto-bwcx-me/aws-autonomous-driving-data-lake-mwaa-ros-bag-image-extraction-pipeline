@@ -22,8 +22,8 @@ import os
 from os import path
 from os.path import dirname, abspath
 
-profile = os.environ["AWS_PROFILE"]
-boto3.setup_default_session(profile_name=profile)
+# profile = os.environ["AWS_PROFILE"]
+# boto3.setup_default_session(profile_name=profile)
 account = boto3.client("sts").get_caller_identity().get("Account")
 region = boto3.session.Session().region_name
 
