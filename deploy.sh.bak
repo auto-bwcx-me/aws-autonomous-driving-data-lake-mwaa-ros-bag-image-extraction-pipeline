@@ -1,11 +1,18 @@
 #!/bin/bash
 
-cmd=$1
-build=$2
+if [ "$#" -ne 3 ]; then
+    echo "Usage: ./deploy.sh <aws named profile> <cdk command> true|false"
+    echo "Example: ./deploy.sh default deploy true"
+    exit 1
+fi
 
+profile=$1
+cmd=$2
+build=$3
+# region=$4
 run_region="ap-southeast-1"
 
-export aws_account_id=$(aws sts get-caller-identity --query Account --output text)
+export aws_account_id=$(aws --profile "$profile" sts get-caller-identity --query Account --output text)
 
 REPO_NAME=vsi-rosbag-repository-3 # Should match the ecr repository name given in config.json
 IMAGE_NAME=my-vsi-ros-image-3     # Should match the image name given in config.json
@@ -20,13 +27,13 @@ if [ $build = true ]; then
     docker build ./service -t $IMAGE_NAME:latest
     last_image_id=$(docker images | awk '{print $3}' | awk 'NR==2')
     echo login ecr
-    aws ecr get-login-password --region ${run_region} | docker login --username AWS --password-stdin "$aws_account_id.dkr.ecr.${run_region}.amazonaws.com"
+    aws ecr --profile "$profile" get-login-password --region ${run_region} | docker login --username AWS --password-stdin "$aws_account_id.dkr.ecr.${run_region}.amazonaws.com"
     docker tag $last_image_id $repo_url
     echo docker push $repo_url
-    aws ecr describe-repositories --repository-names $REPO_NAME --region ${run_region}
+    aws --profile "$profile" ecr describe-repositories --repository-names $REPO_NAME --region ${run_region} || aws --profile "$profile" ecr create-repository --repository-name $REPO_NAME --region ${run_region}
     docker push $repo_url
 else
     echo Skipping build
 fi
 
-cdk $cmd --region ${run_region}
+cdk $cmd --profile $profile --region ${run_region}
