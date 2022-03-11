@@ -96,9 +96,11 @@ cdk --version
 ```
 
 
-创建 ECR 存储库： `adas-rosbag-workflow-with-airflow`，这个存储库名称必须和 config.json 里面一致
+创建 ECR 存储库： `rosbag-workflow-airflow`，这个存储库名称必须和 config.json 里面一致
 ```
-aws ecr create-repository --repository-name adas-rosbag-workflow-with-airflow
+cat config.json |jq .
+
+aws ecr create-repository --repository-name rosbag-workflow-airflow
 ```
 
 
@@ -127,7 +129,7 @@ bash deploy.sh deploy true
 # get s3 bucket name
 s3url="https://auto-bwcx-me.s3.ap-southeast-1.amazonaws.com/aws-autonomous-driving-dataset/test-vehicle-01/072021"
 echo "Download URL is: ${s3url}"
-s3bkt=$(aws s3 ls |grep rosbag-processing-stack-srcbucket |awk '{print $3}')
+s3bkt=$(aws s3 ls |grep rosbag-workflow-airflow-srcbucket |awk '{print $3}')
 echo "S3 bucket is: ${s3bkt}"
 
 

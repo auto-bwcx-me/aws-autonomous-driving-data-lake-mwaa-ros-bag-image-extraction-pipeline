@@ -1,7 +1,7 @@
 {
-  "ecr-repository-name": "adas-rosbag-workflow-with-airflow",
-  "image-name": "adas-rosbag-workflow-with-airflow",
-  "stack-id": "adas-rosbag-workflow-with-airflow",
+  "ecr-repository-name": "rosbag-workflow-airflow",
+  "image-name": "rosbag-workflow-airflow",
+  "stack-id": "rosbag-workflow-airflow",
   "cpu": 4096,
   "memory-limit-mib": 30720
 }
