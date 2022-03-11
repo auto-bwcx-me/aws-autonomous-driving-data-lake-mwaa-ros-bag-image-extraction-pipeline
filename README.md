@@ -14,22 +14,31 @@ A.设置Cloud9
 * 清理临时 Credentials
 
 ```
+echo "config region"
 aws configure set region $(curl -s http://169.254.169.254/latest/meta-data/placement/region)
+
+echo "install packages"
 sudo yum install jq wget -y
+
+echo "remove temp credentials"
 rm -vf ${HOME}/.aws/credentials
 ```
+
 
 B.更新Python3.9
 ```
 cd ~/environment
-sudo yum install jq wget -y
+
+echo "get python 3.9 packages"
 wget https://www.python.org/ftp/python/3.9.10/Python-3.9.10.tgz
 tar xzf Python-3.9.10.tgz
 cd Python-3.9.10 
 
+echo "compile and install"
 ./configure --enable-optimizations
 sudo make altinstall
 
+echo "config python3.9"
 sudo rm -f /usr/bin/python3
 sudo ln -s /usr/local/bin/python3.9 /usr/bin/python3
 ```
@@ -43,6 +52,7 @@ sudo ln -s /usr/local/bin/python3.9 /usr/bin/python3
 ```
 cd ~/environment
 
+echo "clone code from github"
 git clone https://github.com/auto-bwcx-me/aws-autonomous-driving-data-lake-mwaa-ros-bag-image-extraction-pipeline.git
 
 cd aws-autonomous-driving-data-lake-mwaa-ros-bag-image-extraction-pipeline
@@ -86,7 +96,7 @@ cdk --version
 ```
 
 
-创建 ECR 存储库： `adas-rosbag-workflow-with-airflow`
+创建 ECR 存储库： `adas-rosbag-workflow-with-airflow`，这个存储库名称必须和 config.json 里面一致
 ```
 aws ecr create-repository --repository-name adas-rosbag-workflow-with-airflow
 ```
