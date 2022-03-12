@@ -514,7 +514,7 @@ class RosbagProcessor(core.Stack):
             logging_configuration=mwaa_logging_conf,
             name="mwaa-environment",
             network_configuration=mwaa_network_configuration,
-            max_workers=100,
+            max_workers=20,
             plugins_s3_path="plugins/plugins.zip",
             requirements_s3_path="requirements/requirements.txt",
             source_bucket_arn=dag_bucket.bucket_arn,
