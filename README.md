@@ -145,6 +145,8 @@ aws s3 cp ${save_dir}/2020-11-19-22-21-36_1.bag s3://${s3bkt}/2022-03-09-01.bag
 
 
 
+整个流程跑完（基于我们的测试文件），大概需要 2.5 小时（主要在 draw_bounding_boxes 这里）。
+![](./images/result.png)
 
 
 
