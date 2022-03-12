@@ -135,14 +135,14 @@ echo "S3 bucket is: ${s3bkt}"
 
 # create saving directory
 cd ~/environment
-mkdir -p ./auto-data/{industry,test1,test2}
-
+mkdir -p ./data/rosbag-workflow-airflow
+save_dir="./data/rosbag-workflow-airflow"
 
 # download testing files
-wget ${s3url}/2020-11-19-22-21-36_1.bag -O ./auto-data/2020-11-19-22-21-36_1.bag
+wget ${s3url}/2020-11-19-22-21-36_1.bag -O ${save_dir}/2020-11-19-22-21-36_1.bag
 
 # upload testing file
-aws s3 cp ./auto-data/2020-11-19-22-21-36_1.bag s3://${s3bkt}/2022-03-09-01.bag
+aws s3 cp ${save_dir}/2020-11-19-22-21-36_1.bag s3://${s3bkt}/2022-03-09-01.bag
 ```
 
 
