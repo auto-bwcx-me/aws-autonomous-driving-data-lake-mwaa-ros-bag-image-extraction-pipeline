@@ -17,10 +17,10 @@ dag = DAG(
     dag_id='rosbag_processing',
     default_args={},
     schedule_interval='*/30 * * * *',
-    dagrun_timeout=timedelta(minutes=60),
+    dagrun_timeout=timedelta(minutes=480),
     start_date=days_ago(1),
     catchup=False,
-    tags=['Industry Kit AV', 'AWS ProServe', 'ADAS']
+    tags=['Industry Kit AV', 'AWS ProServe', 'ADAS', 'WeiqiongCHEN']
 )
 
 bag_file_sensor = S3MetadataSensor(
