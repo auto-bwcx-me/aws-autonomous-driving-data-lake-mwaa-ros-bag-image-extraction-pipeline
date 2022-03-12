@@ -29,4 +29,4 @@ else
     echo Skipping build
 fi
 
-cdk $cmd --region ${run_region}
+cdk $cmd --region ${run_region} --all --require-approval never

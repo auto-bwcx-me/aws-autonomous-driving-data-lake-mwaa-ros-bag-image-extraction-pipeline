@@ -12,8 +12,7 @@
 A.设置Cloud9
 * 设置并绑定 Instance Profile 角色
 * 清理临时 Credentials
-
-```
+```shell
 echo "config region"
 aws configure set region $(curl -s http://169.254.169.254/latest/meta-data/placement/region)
 
@@ -26,7 +25,7 @@ rm -vf ${HOME}/.aws/credentials
 
 
 B.更新Python3.9
-```
+```shell
 cd ~/environment
 
 echo "get python 3.9 packages"
@@ -45,11 +44,12 @@ sudo ln -s /usr/local/bin/python3.9 /usr/bin/python3
 
 
 
+
 # 2.部署步骤
 
 ## 2.1 准备代码
 下载代码：
-```
+```shell
 cd ~/environment
 
 echo "clone code from github"
@@ -60,7 +60,7 @@ cd aws-autonomous-driving-data-lake-mwaa-ros-bag-image-extraction-pipeline
 
 
 设置Cloud9磁盘空间
-```
+```shell
 # sh resize-ebs.sh 1000
 
 sh resize-ebs-nvme.sh 1000
@@ -70,7 +70,7 @@ sh resize-ebs-nvme.sh 1000
 
 ## 2.2 设置脚本区域
 在开始之前，需要设定 Region，如果没有设定的话，默认使用新加坡区域 （ap-southeast-1）
-```
+```shell
 # sh 00-define-region.sh ap-southeast-1
 
 sh 00-define-region.sh
@@ -79,7 +79,7 @@ sh 00-define-region.sh
 
 
 ## 2.3 准备环境
-```
+```shell
 pip install --upgrade pip
 
 python3 -m venv .env
@@ -89,7 +89,7 @@ pip3 install -r requirements.txt
 
 
 ## 2.4 安装CDK
-```
+```shell
 npm install -g aws-cdk --force
 
 cdk --version
@@ -97,7 +97,7 @@ cdk --version
 
 
 创建 ECR 存储库： `rosbag-workflow-airflow`，这个存储库名称必须和 config.json 里面一致
-```
+```shell
 cat config.json |jq .
 
 aws ecr create-repository --repository-name rosbag-workflow-airflow
@@ -105,7 +105,7 @@ aws ecr create-repository --repository-name rosbag-workflow-airflow
 
 
 如果是第一次运行CDK，可以参考 [CDK官方文档](https://docs.aws.amazon.com/cdk/v2/guide/bootstrapping.html)，或者执行如下注释了的代码
-```
+```shell
 # cdk bootstrap aws://$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document/ |jq -r .accountId)/$(curl -s http://169.254.169.254/latest/meta-data/placement/region)
 
 cdk bootstrap
@@ -114,11 +114,9 @@ cdk bootstrap
 
 
 ## 2.5 CDK部署
-```
+```shell
 bash deploy.sh deploy true
 ```
-
-注意：这个部署过程有个确认过程，不能直接启动部署就走开哦，要确认部署才能走开。
 
 
 
@@ -145,6 +143,16 @@ wget ${s3url}/2020-11-19-22-21-36_1.bag -O ${save_dir}/2020-11-19-22-21-36_1.bag
 aws s3 cp ${save_dir}/2020-11-19-22-21-36_1.bag s3://${s3bkt}/2022-03-09-01.bag
 ```
 
+
+
+
+
+
+# 4.环境清理
+先手工清空对应的S3桶里面的数据，然后执行如下命令清除环境
+```shell
+cdk destroy --all
+```
 
 
 
