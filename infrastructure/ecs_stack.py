@@ -273,7 +273,7 @@ class RosbagProcessor(core.Stack):
             stream_prefix="ecs",
             log_group=aws_logs.LogGroup(
                 self,
-                f"{image_name}-log-group",
+                f"{image_name}-ecs-log-group",
                 log_group_name=f"/ecs/{image_name}"
             ),
         )
